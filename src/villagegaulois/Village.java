@@ -59,21 +59,32 @@ public class Village {
 
 	public String installerVendeur(Gaulois vendeur, String produit, int nbProduit) {
 
-		StringBuilder chaine = new StringBuilder();
+	    StringBuilder chaine = new StringBuilder();
 
-		chaine.append(vendeur.getNom() + " cherche un endroit pour vendre " + nbProduit + " " + produit + ".\n");
+	    chaine.append(vendeur.getNom());
+	    chaine.append(" cherche un endroit pour vendre ");
+	    chaine.append(nbProduit);
+	    chaine.append(" ");
+	    chaine.append(produit);
+	    chaine.append(".\n");
 
-		int indiceEtal = marche.trouverEtalLibre();
+	    int indiceEtal = marche.trouverEtalLibre();
 
-		if (indiceEtal == -1) { // Soit il y'a un étal
-			chaine.append("Il n'y a plus d'étal disponible dans le marché.\n");
-		} else { // Soit pas d'étal
-			marche.utiliserEtal(indiceEtal, vendeur, produit, nbProduit);
-			chaine.append("Le vendeur " + vendeur.getNom() + " vend des " + produit + " à l'étal n°" + (indiceEtal + 1)
-					+ ".\n");
-		}
+	    if (indiceEtal == -1) {
+	        chaine.append("Il n'y a plus d'étal disponible dans le marché.\n");
+	    } else {
+	        marche.utiliserEtal(indiceEtal, vendeur, produit, nbProduit);
 
-		return chaine.toString();
+	        chaine.append("Le vendeur ");
+	        chaine.append(vendeur.getNom());
+	        chaine.append(" vend des ");
+	        chaine.append(produit);
+	        chaine.append(" à l'étal n°");
+	        chaine.append(indiceEtal + 1);
+	        chaine.append(".\n");
+	    }
+
+	    return chaine.toString();
 	}
 
 	public String rechercherVendeursProduit(String produit) {
@@ -183,28 +194,26 @@ public class Village {
 
 		public String afficherMarche() {
 
-			String chaine = ""; // init de la chaîne
+		    StringBuilder chaine = new StringBuilder();
 
-			int nbEtalVide = 0;
+		    int nbEtalVide = 0;
 
-			for (int i = 0; i < etals.length; i++) { // pour toutes les étals
+		    for (int i = 0; i < etals.length; i++) {
 
-				if (etals[i].isEtalOccupe()) { // occupé ?
+		        if (etals[i].isEtalOccupe()) {
+		            chaine.append(etals[i].afficherEtal());
+		        } else {
+		            nbEtalVide++;
+		        }
+		    }
 
-					chaine += etals[i].afficherEtal(); // si oui, on l'ajoute dans la chaîne
+		    if (nbEtalVide > 0) {
+		        chaine.append("Il reste ")
+		        chaine.append(nbEtalVide)
+		        chaine.append(" étals non utilisés dans le marché.\n");
+		    }
 
-				} else {
-
-					nbEtalVide++; // sinon, on incrémente nbEtalVide
-				}
-			}
-
-			if (nbEtalVide > 0) { // s'il y'a au moins une vide, dernier affichage
-
-				chaine += "Il reste " + nbEtalVide + " étals non utilisés dans le marché.\n";
-			}
-
-			return chaine;
+		    return chaine.toString();
 		}
 	}
 }
