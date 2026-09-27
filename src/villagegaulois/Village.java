@@ -1,5 +1,6 @@
 package villagegaulois;
 
+import histoire.VillageSansChefException;
 import personnages.Chef;
 import personnages.Gaulois;
 
@@ -44,7 +45,13 @@ public class Village {
 		return null;
 	}
 
-	public String afficherVillageois() {
+	public String afficherVillageois() throws VillageSansChefException {
+		
+		if(chef == null) {
+			throw new VillageSansChefException("Le village n'a pas de chef.");
+		}
+		
+		
 		StringBuilder chaine = new StringBuilder();
 		if (nbVillageois < 1) {
 			chaine.append("Il n'y a encore aucun habitant au village du chef " + chef.getNom() + ".\n");
@@ -208,8 +215,8 @@ public class Village {
 		    }
 
 		    if (nbEtalVide > 0) {
-		        chaine.append("Il reste ")
-		        chaine.append(nbEtalVide)
+		        chaine.append("Il reste ");
+		        chaine.append(nbEtalVide);
 		        chaine.append(" étals non utilisés dans le marché.\n");
 		    }
 
